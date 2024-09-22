@@ -26,6 +26,9 @@ int main()
     // Render Window
     float wSize{1000};
     sf::RenderWindow window(sf::VideoMode(wSize, wSize), "SFML works!");
+    // Frame rate
+    window.setVerticalSyncEnabled(false);
+    window.setFramerateLimit(60);
     // Main entity
     float r{25};
     sf::CircleShape shape(r, nPoints);
@@ -47,7 +50,9 @@ int main()
     centerCircle(&cBorder, wSize, rCB);
     // Animation setup
     sf::Vector2f newPosV(0, 0);
-    float speed{0.5};
+    float speed{3.5};
+    // Init clock
+    sf::Clock clock;
 
     while (window.isOpen())
     {
@@ -57,19 +62,24 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+        // Print FPS
+        float currentTime = clock.restart().asSeconds();
+        float fps = 1.0f / (currentTime);
+        std::cout << fps << endl;
         // Moving the shape
+            shape.move(0, -speed);
         
         // Colisions
         sf::FloatRect border_box = cBorder.getGlobalBounds();
         sf::FloatRect shape_box = shape.getGlobalBounds();
 
-        if (!shape_box.contains(border_box)) { // Fix collisions
-            shape.move(0, -speed);
-            std::cout << "Collision" << endl;
-        }
-        else {
-            shape.move(0, speed);
-        }
+       // if (!shape_box.contains(border_box)) { // Fix collisions
+        //    shape.move(0, -speed);
+         //   std::cout << "Collision" << endl;
+       // }
+       // else {
+        //    shape.move(0, speed);
+       // }
         
 
         // Draw on screan
